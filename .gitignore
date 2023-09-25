@@ -1,0 +1,12 @@
+# Ignore list for VHDL project
+
+# Vivado files
+*.jou
+*.log
+
+# Vivado folders
+*.cache/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/

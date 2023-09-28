@@ -141,19 +141,20 @@ architecture behavioral of mod3 is
     signal temp_x : std_logic_vector(7 downto 0);
     
 begin
-    temp_x <= x;
-    temp_x_192 <= temp_x;
-    temp_x_96 <= temp_x_192;
-    temp_x_48 <= temp_x_96;
-    temp_x_24 <= temp_x_48;
-    temp_x_12 <= temp_x_24;
-    temp_x_6 <= temp_x_12;
-    temp_x_3 <= temp_x_6;
-    output <= temp_x_3;
     
-    process (temp_x_192, temp_x_96, temp_x_48, temp_x_24, temp_x_12, temp_x_6, temp_x_3, temp_x)
-
+    
+    process (temp_x_192, temp_x_96, temp_x_48, temp_x_24, temp_x_12, temp_x_6, temp_x_3, temp_x, x)
+    
     begin   -- TODO think as cyclic
+        temp_x <= x;
+        temp_x_192 <= temp_x;
+        temp_x_96 <= temp_x_192;
+        temp_x_48 <= temp_x_96;
+        temp_x_24 <= temp_x_48;
+        temp_x_12 <= temp_x_24;
+        temp_x_6 <= temp_x_12;
+        temp_x_3 <= temp_x_6;
+        output <= temp_x_3;
         if temp_x >= "11000000" then
             temp_x_192 <= std_logic_vector(unsigned(temp_x) - "11000000");
         end if;

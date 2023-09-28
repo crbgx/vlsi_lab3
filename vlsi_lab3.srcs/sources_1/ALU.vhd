@@ -92,7 +92,8 @@ begin
                 else    
                     output <= "00000001";  -- Lower value by 1
                 end if;
-                
+             else
+                output <= temp_outty;   
             end if;
             
             when others =>

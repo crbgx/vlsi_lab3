@@ -22,6 +22,7 @@ architecture behavioral of ALU is
     end component;
 
     -- SIGNAL DEFINITIONS HERE IF NEEDED
+    signal temp_192, temp_96, temp_48, temp_24, temp_12, temp_6, temp_3 : std_logic_vector(7 downto 0); 
     signal temp_A : unsigned(7 downto 0);
     signal output : std_logic_vector(7 downto 0);
 
@@ -52,9 +53,8 @@ begin
             end if;
             
         when "0100" =>   -- Unsigned(A) mod 3 
-            u1: mod3 port map (x => A, c => 
+            -- TODO CALL MOD 3 FUNCITON
             
-            output <= std_logic_vector(temp_A);
             
         when "1010" =>   -- Signed(A + B)       -- TODO simply into one-liner
             output <= std_logic_vector(signed(A) + signed(B));
@@ -75,28 +75,9 @@ begin
             end if;
 
         when "1100" =>   -- Signed(A) mod 3
-            temp_A <= unsigned(A);
-            if temp_A > 192 then
-                temp_A <= temp_A - 192;
-            end if;
-            if temp_A > 96 then
-                temp_A <= temp_A - 96;
-            end if;
-            if temp_A > 48 then
-                temp_A <= temp_A - 48;
-            end if;
-            if temp_A > 24 then
-                temp_A <= temp_A - 24;
-            end if;
-            if temp_A > 12 then
-                temp_A <= temp_A - 12;
-            end if;
-            if temp_A > 6 then
-                temp_A <= temp_A - 6;
-            end if;
-            if temp_A > 3 then
-                temp_A <= temp_A - 3;
-            end if;
+            -- TODO CALL MOD 3 FUNCITON
+            
+            
             if A(7) = '1' then    -- Correction for negative numbers
                 if temp_A = 0 then
                     temp_A <= "00000010";   -- Value 2

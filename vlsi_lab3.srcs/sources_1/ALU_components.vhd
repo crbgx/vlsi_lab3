@@ -22,7 +22,15 @@ package ALU_components_pack is
         );
    end component;
    
-   -- ADD MORE COMPONENTS HERE IF NEEDED 
+   -- ADD MORE COMPONENTS HERE IF NEEDED
+   
+   -- mod3
+    component mod3
+    port (  x   : in std_logic_vector (7 downto 0);     -- Signal to check
+            c   : in std_logic_vector(7 downto 0);      -- Control signal
+            output  : out std_logic_vector(7 downto 0)
+        );
+    end component;
    
 end ALU_components_pack;
 
@@ -111,3 +119,64 @@ end behavioral;
 ------------------------------------------------------------------------------
 -- BEHAVORIAL OF THE ADDED COMPONENETS HERE
 -------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------
+-- component mod3 - Mod 3
+-------------------------------------------------------------------------------
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity mod3 is
+    port ( x        : in std_logic_vector(7 downto 0);  -- Signal to check
+           output   : out std_logic_vector(7 downto 0)
+    );
+end mod3;
+
+
+architecture behavioral of mod3 is
+
+    signal temp_x_192, temp_x_96, temp_x_48, temp_x_24, temp_x_12, temp_x_6, temp_x_3 : std_logic_vector(7 downto 0);
+    signal temp_192, temp_96, temp_48, temp_24, temp_12, temp_6, temp_3 : std_logic_vector(7 downto 0);
+    signal temp_x : std_logic_vector(7 downto 0);
+    
+begin
+    temp_x <= x;
+    temp_x_192 <= temp_x;
+    temp_x_96 <= temp_x_192;
+    temp_x_48 <= temp_x_96;
+    temp_x_24 <= temp_x_48;
+    temp_x_12 <= temp_x_24;
+    temp_x_6 <= temp_x_12;
+    temp_x_3 <= temp_x_6;
+    output <= temp_x_3;
+    
+    process (x)
+
+    begin   -- TODO think as cyclic
+        if temp_x > "11000000" then
+            temp_x_192 <= std_logic_vector(unsigned(temp_x) - "11000000");
+        end if;
+        if temp_x_192 > "01100000" then
+            temp_x_96 <= std_logic_vector(unsigned(temp_x_192) - "01100000");
+        end if;
+        if temp_x_96 > "00110000" then
+            temp_x_48 <= std_logic_vector(unsigned(temp_x_96) - "00110000");
+        end if;
+        if temp_x_48 > "00011000" then
+            temp_x_24 <= std_logic_vector(unsigned(temp_x_48) - "00011000");
+        end if;
+        if temp_x_24 > "00001100" then
+            temp_x_12 <= std_logic_vector(unsigned(temp_x_24) - "00001100");
+        end if;
+        if temp_x_12 > "00000110" then
+            temp_x_6 <= std_logic_vector(unsigned(temp_x_12) - "00000110");
+        end if;
+        if temp_x_6 > "00000011" then
+            temp_x_3 <= std_logic_vector(unsigned(temp_x_6) - "00000011");
+        end if;
+   
+    end process;       
+
+end behavioral;

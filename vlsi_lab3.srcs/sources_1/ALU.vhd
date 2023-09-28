@@ -2,6 +2,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library work;
+use work.ALU_components_pack.all;
+
 entity ALU is
    port ( A          : in  std_logic_vector (7 downto 0);   -- Input A
           B          : in  std_logic_vector (7 downto 0);   -- Input B
@@ -14,20 +17,26 @@ end ALU;
 
 architecture behavioral of ALU is
 
-    component mod3 is
-    port(
-        x : in std_logic_vector(7 downto 0);
-        c : in std_logic_vector(7 downto 0);
-        output : out std_logic_vector(7 downto 0));
-    end component;
+
+   component mod3
+   port ( x        : in std_logic_vector(7 downto 0);  -- Signal to check
+          output   : out std_logic_vector(7 downto 0)
+       );
+   end component;
 
     -- SIGNAL DEFINITIONS HERE IF NEEDED
     signal temp_192, temp_96, temp_48, temp_24, temp_12, temp_6, temp_3 : std_logic_vector(7 downto 0); 
     signal temp_A : unsigned(7 downto 0);
     signal output : std_logic_vector(7 downto 0);
+    signal temp_outty : std_logic_vector(7 downto 0);
+    
 
 begin
-
+    mod3_unsigned_inst : mod3 
+    port map (
+    x => A,
+    output => temp_outty
+    );
     process ( FN, A, B )
     begin
     sign <= '0';
@@ -53,7 +62,7 @@ begin
             end if;
             
         when "0100" =>   -- Unsigned(A) mod 3 
-            -- TODO CALL MOD 3 FUNCITON
+            output <= temp_outty;          
             
             
         when "1010" =>   -- Signed(A + B)       -- TODO simply into one-liner
@@ -75,17 +84,16 @@ begin
             end if;
 
         when "1100" =>   -- Signed(A) mod 3
-            -- TODO CALL MOD 3 FUNCITON
-            
-            
             if A(7) = '1' then    -- Correction for negative numbers
-                if temp_A = 0 then
-                    temp_A <= "00000010";   -- Value 2
-               else
-                    temp_A <= temp_A - 1;   -- Lower value by 1
+                if temp_outty = "00000000" then
+                    output <= "00000010";   -- Value 2
+                elsif temp_outty = "00000001" then
+                    output <= "00000000";
+                else    
+                    output <= "00000001";  -- Lower value by 1
                 end if;
+                
             end if;
-            output <= std_logic_vector(temp_A);
             
             when others =>
             output <= "11111111";    -- TODO maybe change to another default

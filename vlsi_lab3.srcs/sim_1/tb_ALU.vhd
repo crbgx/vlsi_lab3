@@ -49,7 +49,7 @@ begin  -- structural
         "00100011" after 6 * period,   -- A = 35
         "11110010" after 7 * period,   -- A = 242
         "00110001" after 8 * period,   -- A = 49
-        "01010101" after 9 * period;   -- A = 85
+        "11010101" after 9 * period;   -- A = 85
   
    B <= "00000011",                    -- B = 3
         "00000011" after 1 * period,   -- B = 3

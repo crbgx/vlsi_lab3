@@ -137,7 +137,6 @@ end mod3;
 architecture behavioral of mod3 is
 
     signal temp_x_192, temp_x_96, temp_x_48, temp_x_24, temp_x_12, temp_x_6, temp_x_3 : std_logic_vector(7 downto 0);
-    --signal temp_192, temp_96, temp_48, temp_24, temp_12, temp_6, temp_3 : std_logic_vector(7 downto 0);
     signal temp_x : std_logic_vector(7 downto 0);
     
 begin

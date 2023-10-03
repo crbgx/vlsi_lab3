@@ -15,9 +15,15 @@ end binary2BCD;
 architecture structural of binary2BCD is 
 
 -- SIGNAL DEFINITIONS HERE IF NEEDED
-  
+    signal binary_reg : std_logic_vector(WIDTH-1 downto 0) := (others => '0');
+    signal bcd_reg : std_logic_vector(9 downto 0) := (others => '0');
+    signal counter, next_counter : std_logic_vector(3 downto 0) := (others => '0');
+    
+
 begin  
 
--- DEVELOPE YOUR CODE HERE
-
+-- DEVELOP YOUR CODE HERE
+    combinational: process (binary_in, binary_reg, bcd_reg)
+    begin
+    
 end structural;

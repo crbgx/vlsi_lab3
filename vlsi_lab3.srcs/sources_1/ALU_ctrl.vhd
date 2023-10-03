@@ -21,16 +21,17 @@ architecture behavioral of ALU_ctrl is
     signal current_state, next_state: state_type;
 
 
-
 begin
     
     -- DEVELOPE YOUR CODE HERE
     registers: process (clk, reset)
     begin
-        if reset = '1' then
-            current_state <= operand_A;
-        elsif rising_edge(clk) then
-            current_state <= next_state;
+        if rising_edge(clk) then
+            if reset = '1' then
+                current_state <= operand_A;
+            else
+                current_state <= next_state;
+            end if;
         end if;
     end process;
 

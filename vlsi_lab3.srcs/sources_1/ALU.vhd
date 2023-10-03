@@ -68,13 +68,15 @@ begin
             
         when "1010" =>   -- Signed(A + B)       -- TODO simply into one-liner
             output <= std_logic_vector(signed(temp_A) + signed(temp_B));
-            sign <= output(7);
-            overflow <= output(8);
+            sign <= output(7);      -- TODO
+            if A(7) = B(7) and A(7) /= output(7) then   -- TODO
+                overflow <= '1';
+            end if;
 
         when "1011" =>   -- Signed(A - B)
             output <= std_logic_vector(signed(temp_A) - signed(temp_B));
-            sign <= output(7);
-            overflow <= output(8);
+            sign <= output(7);      -- TODO
+            overflow <= output(8);  -- TODO
 
         when "1100" =>   -- Signed(A) mod 3
             if a(7) = '1' then    -- Correction for negative numbers

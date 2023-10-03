@@ -14,10 +14,40 @@ end regUpdate;
 
 architecture behavioral of regUpdate is
 
--- SIGNAL DEFINITIONS HERE IF NEEDED
-
+-- SIGNAL DEFINITIONS HERE IF NEEDED    
+    signal reg_A, reg_B, next_reg_A, next_reg_B: std_logic_vector(7 downto 0);
+    
 begin
 
-   -- DEVELOPE YOUR CODE HERE
-
+    -- DEVELOPE YOUR CODE HERE
+    registers: process (clk, reset)
+        begin
+            if rising_edge(clk) then
+                if reset = '1' then
+                    reg_A <= (others => '0');
+                    reg_B <= (others => '0');
+                else
+                    reg_A <= next_reg_A;
+                    reg_B <= next_reg_B;
+                end if;
+            end if;
+        end process;
+    
+    -- Output logic
+    A <= reg_A;
+    B <= reg_B;
+    
+    combinational: process (reg_A, reg_B, RegCtrl, input)    
+    begin
+        --set default value
+        next_reg_A <= reg_A;
+        next_reg_B <= reg_B;
+    
+        if RegCtrl = "10" then
+            next_reg_A <= input;
+        elsif RegCtrl = "01" then
+            next_reg_B <= input;        
+        end if;
+    end process;
+    
 end behavioral;

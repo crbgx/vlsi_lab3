@@ -49,7 +49,7 @@ begin  -- structural
         "00100011" after 6 * period,   -- A = 35
         "11110010" after 7 * period,   -- A = 242
         "00110001" after 8 * period,   -- A = 49
-        "11010101" after 9 * period;   -- A = 85
+        "01010101" after 9 * period;   -- A = 85
   
    B <= "00000011",                    -- B = 3
         "00000011" after 1 * period,   -- B = 3
@@ -62,19 +62,19 @@ begin  -- structural
         "00101101" after 8 * period,   -- B = 45
         "00100100" after 9 * period;   -- B = 36
      
-   FN <= "0000",                              -- Pass A
-         "0001" after 1 * period,             -- Pass B
-         "0000" after 2 * period,             -- Pass A
-         "0001" after 3 * period,             -- Pass B
-         "0010" after 4 * period,             -- Pass unsigned A + B
-         "0011" after 5 * period,             -- Pass unsigned A - B  
-         "0011" after 6 * period,             -- Pass unsigned A - B
-         "0010" after 7 * period,             -- Pass unsigned A + B
-         "0011" after 8 * period,             -- Pass unsigned A - B
-         "0100" after 9 * period,             -- Pass unsigned mod3(A)
-         "0010" after 10 * period,            -- Pass signed A + B
-         "0011" after 11 * period,            -- Pass signed A - B
-         "1100" after 12 * period,            -- Pass signed mod3(A)
-         "1111" after 13 * period;            -- Invalid input command
+   FN <= "1011";                              -- Pass A
+         --"0001" after 1 * period,             -- Pass B
+         --"0000" after 2 * period,             -- Pass A
+         --"0001" after 3 * period,             -- Pass B
+         --"0010" after 4 * period,             -- Pass unsigned A + B
+         --"0011" after 5 * period,             -- Pass unsigned A - B  
+         --"0011" after 6 * period,             -- Pass unsigned A - B
+         --"0010" after 7 * period,             -- Pass unsigned A + B
+         --"0011" after 8 * period,             -- Pass unsigned A - B
+         --"0100" after 9 * period,             -- Pass unsigned mod3(A)
+         --"1010" after 10 * period,            -- Pass signed A + B
+         --"1011" after 11 * period,            -- Pass signed A - B
+         --"1100" after 12 * period,            -- Pass signed mod3(A)
+         --"1111" after 13 * period;            -- Invalid input command
 
 end structural;

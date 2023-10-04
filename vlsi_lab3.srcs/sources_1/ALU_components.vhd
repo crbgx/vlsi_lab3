@@ -129,6 +129,7 @@ use ieee.numeric_std.all;
 
 entity mod3 is
     port ( x        : in std_logic_vector(7 downto 0);  -- Signal to check
+           minus    : in std_logic_vector(7 downto 0);
            output   : out std_logic_vector(7 downto 0)
     );
 end mod3;
@@ -136,44 +137,16 @@ end mod3;
 
 architecture behavioral of mod3 is
 
-    signal temp_x_192, temp_x_96, temp_x_48, temp_x_24, temp_x_12, temp_x_6, temp_x_3 : std_logic_vector(7 downto 0);
     signal temp_x : std_logic_vector(7 downto 0);
     
 begin
     
-    
-    process (temp_x_192, temp_x_96, temp_x_48, temp_x_24, temp_x_12, temp_x_6, temp_x_3, temp_x, x)
-    
-    begin   -- TODO think as cyclic
+    process (temp_x, x)
+    begin
         temp_x <= x;
-        temp_x_192 <= temp_x;
-        temp_x_96 <= temp_x_192;
-        temp_x_48 <= temp_x_96;
-        temp_x_24 <= temp_x_48;
-        temp_x_12 <= temp_x_24;
-        temp_x_6 <= temp_x_12;
-        temp_x_3 <= temp_x_6;
-        output <= temp_x_3;
-        if temp_x >= "11000000" then
-            temp_x_192 <= std_logic_vector(unsigned(temp_x) - "11000000");
-        end if;
-        if temp_x_192 >= "01100000" then
-            temp_x_96 <= std_logic_vector(unsigned(temp_x_192) - "01100000");
-        end if;
-        if temp_x_96 >= "00110000" then
-            temp_x_48 <= std_logic_vector(unsigned(temp_x_96) - "00110000");
-        end if;
-        if temp_x_48 >= "00011000" then
-            temp_x_24 <= std_logic_vector(unsigned(temp_x_48) - "00011000");
-        end if;
-        if temp_x_24 >= "00001100" then
-            temp_x_12 <= std_logic_vector(unsigned(temp_x_24) - "00001100");
-        end if;
-        if temp_x_12 >= "00000110" then
-            temp_x_6 <= std_logic_vector(unsigned(temp_x_12) - "00000110");
-        end if;
-        if temp_x_6 >= "00000011" then
-            temp_x_3 <= std_logic_vector(unsigned(temp_x_6) - "00000011");
+        output <= temp_x;
+        if temp_x >= minus then
+            output <= std_logic_vector(unsigned(temp_x) - unsigned(minus));
         end if;
    
     end process;       

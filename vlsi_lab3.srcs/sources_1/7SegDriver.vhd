@@ -20,7 +20,8 @@ architecture behavioral of seven_seg_driver is
     
     signal current_state_display, next_state_display: state_type_display;
     signal reg_digit_counter, next_reg_digit_counter: unsigned(13 downto 0);
-    signal temp_SEGMENT : std_logic_vector(3 downto 0);
+    signal temp_SEGMENT : std_logic_vector(27 downto 0);
+    signal overFlow_Sign : std_logic_vector(1 downto 0) := (others => '0');
     
 begin
 
@@ -46,69 +47,123 @@ begin
         case current_state_display is
         when dis0 =>
             DIGIT_ANODE <= "1110";
-            temp_SEGMENT <= BCD_digit(3 downto 0);
+            SEGMENT <= temp_segment(6 downto 0);
             if reg_digit_counter = "0" then
                 next_state_display <= dis1;
             end if;
         when dis1 =>
             DIGIT_ANODE <= "1101";
-            temp_SEGMENT <= BCD_digit(7 downto 4);
+            SEGMENT <= temp_segment(13 downto 7);
             if reg_digit_counter = "0" then
                 next_state_display <= dis2;
             end if;
         when dis2 =>
             DIGIT_ANODE <= "1011";
-            temp_SEGMENT <= "00" & BCD_digit(9 downto 8);
+            SEGMENT <= temp_segment(20 downto 14);
             if reg_digit_counter = "0" then
                next_state_display <= dis3;
             end if;       
         when dis3 =>
             DIGIT_ANODE <= "0111";
-            if overflow = '1' then
-                temp_SEGMENT <= "1110";
-            elsif sign = '1' then
-                temp_SEGMENT <= "1111";
-            end if;
+            SEGMENT <= temp_segment(27 downto 21);
             if reg_digit_counter = "0" then
                 next_state_display <= dis0;
              end if;
         end case;  
     end process;
     
+    overFlow_Sign <= overflow & sign;
+    
     combinational: process(temp_segment)
     begin
         -- The order of the LEDs from 6 downto 0 is:
         -- [g, f, e, d, c, b, a]    (No dp)
-        case temp_SEGMENT is
+        case BCD_digit(3 downto 0) is
             when "0000" =>
-                SEGMENT <= "1000000";      -- 0
+                temp_SEGMENT(6 downto 0) <= "1000000";      -- 0
             when "0001" =>
-                SEGMENT <= "1111001";      -- 1
+                temp_SEGMENT(6 downto 0) <= "1111001";      -- 1
             when "0010" =>
-                SEGMENT <= "0100100";      -- 2
+                temp_SEGMENT(6 downto 0) <= "0100100";      -- 2
             when "0011" =>
-                SEGMENT <= "0110000";      -- 3
+                temp_SEGMENT(6 downto 0) <= "0110000";      -- 3
             when "0100" =>
-                SEGMENT <= "0011001";      -- 4
+                temp_SEGMENT(6 downto 0) <= "0011001";      -- 4
             when "0101" =>
-                SEGMENT <= "0010010";      -- 5         
+                temp_SEGMENT(6 downto 0) <= "0010010";      -- 5         
             when "0110" =>
-                SEGMENT <= "0000010";      -- 6
+                temp_SEGMENT(6 downto 0) <= "0000010";      -- 6
             when "0111" =>
-                SEGMENT <= "1111000";      -- 7
+                temp_SEGMENT(6 downto 0) <= "1111000";      -- 7
             when "1000" =>
-                SEGMENT <= "0000000";      -- 8
+                temp_SEGMENT(6 downto 0) <= "0000000";      -- 8
             when "1001" =>
-                SEGMENT <= "0011000";      -- 9
+                temp_SEGMENT(6 downto 0) <= "0011000";      -- 9
             when "1101" =>
-                SEGMENT <= "1111111";      -- Beginning state, empty register
+                temp_SEGMENT(6 downto 0) <= "1111111";      -- Beginning state, empty register
             when "1110" =>
-                SEGMENT <= "0001110";      -- F for overflow
+                temp_SEGMENT(6 downto 0) <= "0001110";      -- F for overflow
             when "1111" =>
-                SEGMENT <= "0111111";      -- Negative Sign (-)
+                temp_SEGMENT(6 downto 0) <= "0111111";      -- Negative Sign (-)
             when others =>
-                SEGMENT <= "0000110";      -- E (Probably not needed anymore)
-            end case;    
+                temp_SEGMENT(6 downto 0) <= "0000110";      -- E (Probably not needed anymore)
+            end case;
+            
+         case BCD_digit(7 downto 4) is
+            when "0000" =>
+                temp_SEGMENT(13 downto 7) <= "1000000";      -- 0
+            when "0001" =>
+                temp_SEGMENT(13 downto 7) <= "1111001";      -- 1
+            when "0010" =>
+                temp_SEGMENT(13 downto 7) <= "0100100";      -- 2
+            when "0011" =>
+                temp_SEGMENT(13 downto 7) <= "0110000";      -- 3
+            when "0100" =>
+                temp_SEGMENT(13 downto 7) <= "0011001";      -- 4
+            when "0101" =>
+                temp_SEGMENT(13 downto 7) <= "0010010";      -- 5         
+            when "0110" =>
+                temp_SEGMENT(13 downto 7) <= "0000010";      -- 6
+            when "0111" =>
+                temp_SEGMENT(13 downto 7) <= "1111000";      -- 7
+            when "1000" =>
+                temp_SEGMENT(13 downto 7) <= "0000000";      -- 8
+            when "1001" =>
+                temp_SEGMENT(13 downto 7) <= "0011000";      -- 9
+            when "1101" =>
+                temp_SEGMENT(13 downto 7) <= "1111111";      -- Beginning state, empty register
+            when "1110" =>
+                temp_SEGMENT(13 downto 7) <= "0001110";      -- F for overflow
+            when "1111" =>
+                temp_SEGMENT(13 downto 7) <= "0111111";      -- Negative Sign (-)
+            when others =>
+                temp_SEGMENT(13 downto 7) <= "0000110";      -- E (Probably not needed anymore)
+            end case;
+            
+        case BCD_digit(9 downto 8) is
+            when "00" =>
+                temp_SEGMENT(20 downto 14) <= "1000000";      -- 0
+            when "01" =>
+                temp_SEGMENT(20 downto 14) <= "1111001";      -- 1
+            when "10" =>
+                temp_SEGMENT(20 downto 14) <= "0100100";      -- 2
+            when "1101" =>
+                temp_SEGMENT(20 downto 14) <= "1111111";      -- Beginning state, empty register
+            when others =>
+                temp_SEGMENT(20 downto 14) <= "0000110";      -- E (Probably not needed anymore)
+        end case;
+                    
+        case overFlow_Sign is
+            when "01" =>
+                temp_SEGMENT(27 downto 21) <= "0111111";      -- Negative Sign (-)
+            when "10" =>
+                temp_SEGMENT(27 downto 21) <= "0001110";      -- F for overflow
+            when "11" =>
+                temp_SEGMENT(27 downto 21) <= "0001110";      -- F for overflow predominates
+            when others =>
+                temp_SEGMENT(27 downto 21) <= "1111111";       -- OFF
+        end case;
+            
     end process;
     
 end behavioral;

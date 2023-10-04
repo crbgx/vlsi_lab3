@@ -17,7 +17,6 @@ end ALU;
 
 architecture behavioral of ALU is
 
-
    component mod3
    port ( x        : in std_logic_vector(7 downto 0);  -- Signal to check
           output   : out std_logic_vector(7 downto 0)

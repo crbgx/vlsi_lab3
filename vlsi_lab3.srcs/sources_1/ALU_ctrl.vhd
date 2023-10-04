@@ -23,7 +23,7 @@ architecture behavioral of ALU_ctrl is
 
 begin
     
-    -- DEVELOPE YOUR CODE HERE
+    -- DEVELOP YOUR CODE HERE
     registers: process (clk, reset)
     begin
         if rising_edge(clk) then

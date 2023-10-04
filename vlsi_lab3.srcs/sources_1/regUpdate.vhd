@@ -3,23 +3,23 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity regUpdate is
-   port ( clk        : in  std_logic;
+    port ( clk        : in  std_logic;
           reset      : in  std_logic;
           RegCtrl    : in  std_logic_vector (1 downto 0);   -- Register update control from ALU controller
           input      : in  std_logic_vector (7 downto 0);   -- Switch inputs
           A          : out std_logic_vector (7 downto 0);   -- Input A
-          B          : out std_logic_vector (7 downto 0)   -- Input B
-        );
+          B          : out std_logic_vector (7 downto 0)    -- Input B
+    );
 end regUpdate;
 
 architecture behavioral of regUpdate is
 
--- SIGNAL DEFINITIONS HERE IF NEEDED    
+    -- SIGNAL DEFINITIONS HERE IF NEEDED    
     signal reg_A, reg_B, next_reg_A, next_reg_B: std_logic_vector(7 downto 0);
     
 begin
 
-    -- DEVELOPE YOUR CODE HERE
+    -- DEVELOP YOUR CODE HERE
     registers: process (clk, reset)
         begin
             if rising_edge(clk) then

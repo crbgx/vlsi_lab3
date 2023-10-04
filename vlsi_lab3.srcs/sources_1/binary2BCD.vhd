@@ -14,16 +14,65 @@ end binary2BCD;
 
 architecture structural of binary2BCD is 
 
--- SIGNAL DEFINITIONS HERE IF NEEDED
-    signal binary_reg : std_logic_vector(WIDTH-1 downto 0) := (others => '0');
-    signal bcd_reg : std_logic_vector(9 downto 0) := (others => '0');
-    signal counter, next_counter : std_logic_vector(3 downto 0) := (others => '0');
+   -- COMPONENT IMPORT
+   component dd_shift
+   port ( input_binary    : in std_logic;
+          input_bcd    : in std_logic_vector(9 downto 0);  -- Signal to shift
+          output_bcd   : out std_logic_vector(9 downto 0)
+       );
+    end component;
     
+-- SIGNAL DEFINITIONS HERE IF NEEDED
+    signal bcd_temp_1, bcd_temp_2, bcd_temp_3, bcd_temp_4, bcd_temp_5, bcd_temp_6, bcd_temp_7 : std_logic_vector(WIDTH-1 downto 0) := (others => '0');
 
 begin  
 
--- DEVELOP YOUR CODE HERE
-    combinational: process (binary_in, binary_reg, bcd_reg)
-    begin
+    -- COMPONENT DELCARATION
+    dd_shift_1 : dd_shift
+    port map(
+        input_binary => binary_in(WIDTH-3),
+        input_bcd => bcd_temp_1,
+        output_bcd => bcd_temp_2
+    );
     
+    dd_shift_2 : dd_shift
+    port map(
+        input_binary => binary_in(WIDTH-4),
+        input_bcd => bcd_temp_2,
+        output_bcd => bcd_temp_3
+    );
+    
+    dd_shift_3 : dd_shift
+    port map(
+        input_binary => binary_in(WIDTH-5),
+        input_bcd => bcd_temp_3,
+        output_bcd => bcd_temp_4
+    );
+
+    dd_shift_4 : dd_shift
+    port map(
+        input_binary => binary_in(WIDTH-6),
+        input_bcd => bcd_temp_4,
+        output_bcd => bcd_temp_5
+    );
+
+    dd_shift_5 : dd_shift
+    port map(
+        input_binary => binary_in(WIDTH-7),
+        input_bcd => bcd_temp_5,
+        output_bcd => bcd_temp_6
+    );
+
+    dd_shift_6 : dd_shift
+    port map(
+        input_binary => binary_in(WIDTH-8),
+        input_bcd => bcd_temp_6,
+        output_bcd => BCD_out
+    );
+    
+-- DEVELOP YOUR CODE HERE
+    combinational: process (binary_in)
+    begin
+        bcd_temp_1(1 downto 0) <= binary_in(WIDTH-1 downto WIDTH-2);
+    end process;
 end structural;

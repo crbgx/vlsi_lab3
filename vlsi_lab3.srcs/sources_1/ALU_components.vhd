@@ -179,3 +179,42 @@ begin
     end process;       
 
 end behavioral;
+
+
+------------------------------------------------------------------------------
+-- component doubledabble - Double Dabble
+-------------------------------------------------------------------------------
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity dd_shift is
+    port ( input_binary    : in std_logic;
+           input_bcd    : in std_logic_vector(9 downto 0);  -- Signal to shift
+           output_bcd   : out std_logic_vector(9 downto 0)
+    );
+end dd_shift;
+
+
+architecture behavioral of dd_shift is
+
+    signal temp_bcd : std_logic_vector(9 downto 0) := (others => '0');
+    signal temp_addition : std_logic_vector(7 downto 0) := (others => '0');
+
+begin
+
+    process
+    begin
+        temp_bcd <= input_bcd(8 downto 0) & input_binary;
+        if temp_bcd(7 downto 4) >= "0101" then      -- Check TENS >= 5
+            temp_bcd <= std_logic_vector(unsigned(temp_bcd) + "0000110000");    -- 48
+        end if;
+        if temp_bcd(3 downto 0) >= "0101" then      -- Check TENS >= 5
+            temp_bcd <= std_logic_vector(unsigned(temp_bcd) + "0000000011");    -- 3
+        end if;
+        
+        output_bcd <= temp_bcd;
+
+    end process;       
+
+end behavioral;

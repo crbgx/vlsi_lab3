@@ -120,9 +120,9 @@ begin
             end if;
 
         when "1011" =>   -- Signed(A - B)
-            temp_A(8) <= '0';
-            temp_B(8) <= '0';
-            output <= std_logic_vector(unsigned(abs(signed(std_logic_vector(signed(temp_A) - signed(temp_B))))));
+            temp_A(8) <= temp_A(7);
+            temp_B(8) <= temp_B(7);
+            output <= std_logic_vector(abs(signed(std_logic_vector(signed(temp_A) - signed(temp_B)))));
             output_sign <= std_logic_vector(signed(temp_A) - signed(temp_B));
             sign <= output_sign(7);
             if temp_A(7) /= temp_B(7) and temp_A(7) /= output_sign(7) then

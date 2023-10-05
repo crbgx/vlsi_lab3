@@ -180,21 +180,26 @@ end dd_shift;
 
 architecture behavioral of dd_shift is
 
-    signal temp_bcd : std_logic_vector(9 downto 0) := (others => '0');
+    signal temp_bcd, temp_output_bcd : std_logic_vector(9 downto 0) := (others => '0');
 
 begin
-    
-    process (input_bcd)
-    begin
-        temp_bcd <= input_bcd;
-        if temp_bcd(7 downto 4) >= "0101" then      -- Check TENS >= 5
-            temp_bcd <= std_logic_vector(unsigned(temp_bcd) + "0000110000");    -- 48
-        end if;
-        if temp_bcd(3 downto 0) >= "0101" then      -- Check ONES >= 5
-            temp_bcd <= std_logic_vector(unsigned(temp_bcd) + "0000000011");    -- 3
-        end if;
-        output_bcd <= temp_bcd(8 downto 0) & input_binary;  -- TODO Warning
 
-    end process;       
+    temp_bcd <= input_bcd;
+    output_bcd <= temp_output_bcd(8 downto 0) & input_binary;
+    
+    process (temp_bcd)
+    begin
+    
+    if unsigned(temp_bcd(7 downto 4)) >= 5 then
+        if unsigned(temp_bcd(3 downto 0)) >= 5 then
+            temp_output_bcd <= std_logic_vector(unsigned(temp_bcd) + 51);
+        else
+            temp_output_bcd <= std_logic_vector(unsigned(temp_bcd) + 48);
+        end if;
+    elsif unsigned(temp_bcd(3 downto 0)) >= 5 then
+        temp_output_bcd <= std_logic_vector(unsigned(temp_bcd) + 3);
+    end if;
+    
+    end process;     
 
 end behavioral;

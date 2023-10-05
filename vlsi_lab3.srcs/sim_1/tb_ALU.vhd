@@ -45,7 +45,8 @@ begin  -- structural
         "00010001" after 2 * period,   -- A = 17
         "10010001" after 3 * period,   -- A = 145
         "10010100" after 4 * period,   -- A = 148
-        "11010101" after 5 * period,   -- A = 213
+        "11111111" after 5 * period,    -- A = -1
+        --"11010101" after 5 * period,   -- A = 213
         "00100011" after 6 * period,   -- A = 35
         "11110010" after 7 * period,   -- A = 242
         "00110001" after 8 * period,   -- A = 49

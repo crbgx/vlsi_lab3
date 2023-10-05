@@ -39,7 +39,7 @@ begin
     end process;
 
     -- DISPLAY FSM
-    combinational_display: process (reg_digit_counter, current_state_display) -- fill out the sensitivity list     
+    combinational_display: process (reg_digit_counter, current_state_display, temp_segment) -- fill out the sensitivity list     
     begin
         
         next_state_display <= current_state_display;
@@ -74,7 +74,7 @@ begin
     
     overFlow_Sign <= overflow & sign;
     
-    combinational: process(temp_segment)
+    combinational: process(BCD_digit, overFlow_Sign)
     begin
         -- The order of the LEDs from 6 downto 0 is:
         -- [g, f, e, d, c, b, a]    (No dp)
@@ -101,10 +101,6 @@ begin
                 temp_SEGMENT(6 downto 0) <= "0011000";      -- 9
             when "1101" =>
                 temp_SEGMENT(6 downto 0) <= "1111111";      -- Beginning state, empty register
-            when "1110" =>
-                temp_SEGMENT(6 downto 0) <= "0001110";      -- F for overflow
-            when "1111" =>
-                temp_SEGMENT(6 downto 0) <= "0111111";      -- Negative Sign (-)
             when others =>
                 temp_SEGMENT(6 downto 0) <= "0000110";      -- E (Probably not needed anymore)
             end case;
@@ -130,12 +126,6 @@ begin
                 temp_SEGMENT(13 downto 7) <= "0000000";      -- 8
             when "1001" =>
                 temp_SEGMENT(13 downto 7) <= "0011000";      -- 9
-            when "1101" =>
-                temp_SEGMENT(13 downto 7) <= "1111111";      -- Beginning state, empty register
-            when "1110" =>
-                temp_SEGMENT(13 downto 7) <= "0001110";      -- F for overflow
-            when "1111" =>
-                temp_SEGMENT(13 downto 7) <= "0111111";      -- Negative Sign (-)
             when others =>
                 temp_SEGMENT(13 downto 7) <= "0000110";      -- E (Probably not needed anymore)
             end case;

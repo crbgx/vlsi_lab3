@@ -22,8 +22,7 @@ architecture behavioral of ALU_ctrl is
 
 
 begin
-    
-    -- DEVELOP YOUR CODE HERE
+
     registers: process (clk, reset)
     begin
         if rising_edge(clk) then
@@ -40,6 +39,7 @@ begin
         -- set default value
         next_state <= current_state;
         regCtrl <= "00";    -- Not writing into any registers
+        FN <= "1111";       -- Default value, it does nothing
         
         case current_state is
             when operand_A =>

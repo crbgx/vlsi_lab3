@@ -16,7 +16,7 @@ architecture structural of binary2BCD is
 
    -- COMPONENT IMPORT
    component dd_shift
-   port ( input_binary    : in std_logic;
+   port ( input_binary : in std_logic;
           input_bcd    : in std_logic_vector(9 downto 0);  -- Signal to shift
           output_bcd   : out std_logic_vector(9 downto 0)
        );
@@ -28,7 +28,7 @@ architecture structural of binary2BCD is
 begin  
 
     -- COMPONENT DELCARATION
-    bcd_temp_1 <= "0000000000";
+    bcd_temp_1 <= (others => '0');
     
     dd_shift_1 : dd_shift
     port map(
@@ -85,6 +85,5 @@ begin
             input_bcd => bcd_temp_8,
             output_bcd => BCD_out
         );
-    
--- DEVELOP YOUR CODE HERE
+        
 end structural;

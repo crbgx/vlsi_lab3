@@ -23,12 +23,20 @@ package ALU_components_pack is
    end component;
    
    -- ADD MORE COMPONENTS HERE IF NEEDED
-   
    -- mod3
     component mod3
     port (  x   : in std_logic_vector (7 downto 0);     -- Signal to check
+            minus    : in std_logic_vector(7 downto 0);
             output  : out std_logic_vector(7 downto 0)
         );
+    end component;
+   
+    -- dd_shift
+    component dd_shift
+    port (  input_binary : in std_logic;
+            input_bcd    : in std_logic_vector(9 downto 0);  -- Signal to shift
+            output_bcd   : out std_logic_vector(9 downto 0)
+    );
     end component;
    
 end ALU_components_pack;
@@ -119,7 +127,6 @@ end behavioral;
 -- BEHAVORIAL OF THE ADDED COMPONENETS HERE
 -------------------------------------------------------------------------------
 
-
 ------------------------------------------------------------------------------
 -- component mod3 - Mod 3
 -------------------------------------------------------------------------------
@@ -137,19 +144,21 @@ end mod3;
 
 architecture behavioral of mod3 is
 
-    signal temp_x : std_logic_vector(7 downto 0);
+    signal temp_x, temp_output : std_logic_vector(7 downto 0);
     
 begin
     
     process (temp_x, x)
     begin
-        temp_x <= x;
-        output <= temp_x;
+        temp_output <= temp_x;
         if temp_x >= minus then
-            output <= std_logic_vector(unsigned(temp_x) - unsigned(minus));
+            temp_output <= std_logic_vector(unsigned(temp_x) - unsigned(minus));
         end if;
-   
+
     end process;       
+
+    temp_x <= x;
+    output <= temp_output;
 
 end behavioral;
 
@@ -172,11 +181,10 @@ end dd_shift;
 architecture behavioral of dd_shift is
 
     signal temp_bcd : std_logic_vector(9 downto 0) := (others => '0');
-    signal temp_addition : std_logic_vector(7 downto 0) := (others => '0');
 
 begin
     
-    process
+    process (input_bcd)
     begin
         temp_bcd <= input_bcd;
         if temp_bcd(7 downto 4) >= "0101" then      -- Check TENS >= 5

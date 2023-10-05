@@ -81,22 +81,25 @@ architecture structural of ALU_top is
    signal result_signal : std_logic_vector(7 downto 0);
    signal OF_signal, sign_signal : std_logic;
    signal BCD_signal : std_logic_vector(9 downto 0);
+   signal reset_negated : std_logic;
    
 
 begin
 
+    reset_negated <= not(reset);
+    
    ---- to provide a clean signal out of a bouncy one coming from the push button
    ---- input(b_Enter) comes from the pushbutton; output(Enter) goes to the FSM 
    debouncer1: debouncer
    port map ( clk          => clk,
-              reset        => reset,
+              reset        => reset_negated,
               button_in    => b_Enter,
               button_out   => Enter
     );
 
     debouncer2: debouncer
     port map (  clk          => clk,
-                reset        => reset,
+                reset        => reset_negated,
                 button_in    => b_Sign,
                 button_out   => Sign
     );
@@ -105,7 +108,7 @@ begin
     -- ***************************************
     ALUcontroller: ALU_ctrl
     port map (  clk     => clk,
-                reset   => reset,
+                reset   => reset_negated,
                 enter   => Enter,
                 sign    => Sign,
                 FN      => FN_signal,
@@ -114,7 +117,7 @@ begin
     
     RegUpdater: regUpdate
     port map (  clk        => clk,
-                reset      => reset,
+                reset      => reset_negated,
                 RegCtrl    => RegCtrl_signal,   -- Register update control from ALU controller
                 input      => input,   -- Switch inputs
                 A          => A_signal,  -- Input A
@@ -136,13 +139,12 @@ begin
            );
     seven_seg_drivern : seven_seg_driver
         port map (clk           => clk,
-                  reset         => reset,
+                  reset         => reset_negated,
                   BCD_digit     => BCD_signal,          
                   sign          => sign_signal,
                   overflow      => OF_signal,
                   DIGIT_ANODE   => anode,
                   SEGMENT       => seven_seg
             );
-    
     
 end structural;

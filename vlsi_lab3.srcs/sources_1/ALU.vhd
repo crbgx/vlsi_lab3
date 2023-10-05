@@ -147,7 +147,7 @@ begin
             
     end case;
        
-    -- DEVELOPE YOUR CODE HERE
+    -- DEVELOP YOUR CODE HERE
     result <= output(7 downto 0);
     end process;
 

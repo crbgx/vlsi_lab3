@@ -8,14 +8,14 @@ entity regUpdate is
           RegCtrl    : in  std_logic_vector (1 downto 0);   -- Register update control from ALU controller
           input      : in  std_logic_vector (7 downto 0);   -- Switch inputs
           A          : out std_logic_vector (7 downto 0);   -- Input A
-          B          : out std_logic_vector (7 downto 0)    -- Input B
+          B          : out std_logic_vector (7 downto 0)   -- Input B
     );
 end regUpdate;
 
 architecture behavioral of regUpdate is
 
     -- SIGNAL DEFINITIONS HERE IF NEEDED    
-    signal reg_A, reg_B, next_reg_A, next_reg_B: std_logic_vector(7 downto 0);
+    signal reg_A, reg_B, next_reg_A, next_reg_B: std_logic_vector(7 downto 0) := (others => '0');
     
 begin
 
@@ -46,7 +46,7 @@ begin
         if RegCtrl = "10" then
             next_reg_A <= input;
         elsif RegCtrl = "01" then
-            next_reg_B <= input;        
+            next_reg_B <= input;
         end if;
     end process;
     

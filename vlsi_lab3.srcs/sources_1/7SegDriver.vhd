@@ -151,7 +151,7 @@ begin
             when "11" =>
                 temp_SEGMENT(27 downto 21) <= "0001110";      -- F for overflow predominates
             when others =>
-                temp_SEGMENT(27 downto 21) <= "1111111";       -- OFF
+                temp_SEGMENT(27 downto 21) <= "1111111";      -- OFF
         end case;
             
     end process;

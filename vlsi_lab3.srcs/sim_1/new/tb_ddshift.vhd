@@ -33,20 +33,17 @@ begin   -- behavioral
     
     --clk <= not(clk) after period/2;
     
-    input_binary <= '0',
-                    '1' after 1 * period,
-                    '0' after 2 * period;
+    input_binary <= '1',--,
+                    '0' after 1 * period,
+                    '1' after 2 * period,
+                    '0' after 3 * period;
                 
-    input_bcd <= "0011110000",
-                "0000000000" after 1 * period,
-                "0000000110" after 2 * period,
-                "0001100000" after 3 * period,
-                "0011100111" after 4 * period,
-                "0000011011" after 5 * period,
-                "0010101010" after 6 * period,
-                "1001010101" after 7 * period,
-                "0011001101" after 8 * period,
-                "0001010010" after 9 * period,
-                "0000001100" after 10 * period;
+    input_bcd <= "0000000000",
+                "0100100110" after 1 * period,
+                "0001011001" after 2 * period,
+                "0001110100" after 3 * period,
+                "0000000000" after 4 * period,
+                "0000000001" after 5 * period,
+                "0000000000" after 6 * period;
 
 end behavioral;

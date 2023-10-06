@@ -23,14 +23,14 @@ architecture structural of binary2BCD is
     end component;
     
 -- SIGNAL DEFINITIONS HERE IF NEEDED
-    signal bcd_temp_1, bcd_temp_2, bcd_temp_3, bcd_temp_4, bcd_temp_5, bcd_temp_6, bcd_temp_7, bcd_temp_8, bcd_temp_9 : std_logic_vector(9 downto 0) := (others => '0');
+    signal bcd_temp_1, bcd_temp_2, bcd_temp_3, bcd_temp_4, bcd_temp_5, bcd_temp_6, bcd_temp_7, bcd_temp_8 : std_logic_vector(9 downto 0) := (others => '0');
 
 begin  
 
     -- COMPONENT DELCARATION
     bcd_temp_1 <= (others => '0');
     
-    BCD_out <= bcd_temp_9;
+    --BCD_out <= bcd_temp_9;
     
     dd_shift_1 : dd_shift
     port map(
@@ -85,7 +85,7 @@ begin
         port map(
             input_binary => binary_in(0),
             input_bcd => bcd_temp_8,
-            output_bcd => bcd_temp_9
+            output_bcd => BCD_out
         );
         
         

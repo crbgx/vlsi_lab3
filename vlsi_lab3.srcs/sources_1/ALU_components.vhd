@@ -198,6 +198,8 @@ begin
         end if;
     elsif unsigned(temp_bcd(3 downto 0)) >= 5 then
         temp_output_bcd <= std_logic_vector(unsigned(temp_bcd) + 3);
+    else
+        temp_output_bcd <= temp_bcd;
     end if;
     
     end process;     

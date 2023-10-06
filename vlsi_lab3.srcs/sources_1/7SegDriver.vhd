@@ -19,7 +19,7 @@ architecture behavioral of seven_seg_driver is
     type state_type_display is (dis0, dis1, dis2, dis3);
     
     signal current_state_display, next_state_display: state_type_display;
-    signal reg_digit_counter, next_reg_digit_counter: unsigned(13 downto 0);
+    signal reg_digit_counter, next_reg_digit_counter: unsigned(16 downto 0);
     signal temp_SEGMENT : std_logic_vector(27 downto 0);
     signal overFlow_Sign : std_logic_vector(1 downto 0) := (others => '0');
     
@@ -137,7 +137,7 @@ begin
                 temp_SEGMENT(20 downto 14) <= "1111001";      -- 1
             when "10" =>
                 temp_SEGMENT(20 downto 14) <= "0100100";      -- 2
-            when "1101" =>
+            when "11" =>
                 temp_SEGMENT(20 downto 14) <= "1111111";      -- Beginning state, empty register
             when others =>
                 temp_SEGMENT(20 downto 14) <= "0000110";      -- E (Probably not needed anymore)

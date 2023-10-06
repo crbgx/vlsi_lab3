@@ -11,7 +11,11 @@ entity ALU_top is
           b_Sign     : in  std_logic;
           input      : in  std_logic_vector(7 downto 0);
           seven_seg  : out std_logic_vector(6 downto 0);
-          anode      : out std_logic_vector(3 downto 0)
+          anode      : out std_logic_vector(3 downto 0);
+          anode_off  : out std_logic_vector(3 downto 0);
+          state      : out std_logic_vector(3 downto 0);
+          enter_led : out std_logic;
+          sign_led   : out std_logic
     );
 end ALU_top;
 
@@ -22,8 +26,8 @@ architecture structural of ALU_top is
                 reset   : in  std_logic;
                 enter   : in  std_logic;
                 sign    : in  std_logic;
-                FN      : out std_logic_vector (3 downto 0);   -- ALU functions
-                RegCtrl : out std_logic_vector (1 downto 0)   -- Register update control bits [A B]
+                FN      : out std_logic_vector (3 downto 0);    -- ALU functions
+                RegCtrl : out std_logic_vector (1 downto 0)     -- Register update control bits [A B]
         );
     end component;
    
@@ -47,17 +51,17 @@ architecture structural of ALU_top is
     end component;
             
     component ALU is
-        port (  A          : in  std_logic_vector (7 downto 0);   -- Input A
-                B          : in  std_logic_vector (7 downto 0);   -- Input B
-                FN         : in  std_logic_vector (3 downto 0);   -- ALU functions provided by the ALU_Controller (see the lab manual)
-                result     : out std_logic_vector (7 downto 0);   -- ALU output (unsigned binary)
-                overflow   : out std_logic;                       -- '1' if overflow ocurres, '0' otherwise 
-                sign       : out std_logic                        -- '1' if the result is a negative value, '0' otherwise
+        port (  A          : in  std_logic_vector (7 downto 0);     -- Input A
+                B          : in  std_logic_vector (7 downto 0);     -- Input B
+                FN         : in  std_logic_vector (3 downto 0);     -- ALU functions provided by the ALU_Controller (see the lab manual)
+                result     : out std_logic_vector (7 downto 0);     -- ALU output (unsigned binary)
+                overflow   : out std_logic;                         -- '1' if overflow ocurres, '0' otherwise 
+                sign       : out std_logic                          -- '1' if the result is a negative value, '0' otherwise
         );
     end component;
         
     component binary2BCD is
-        port (  binary_in : in  std_logic_vector(7 downto 0);  -- binary input width
+        port (  binary_in : in  std_logic_vector(7 downto 0);       -- binary input width
                 BCD_out   : out std_logic_vector(9 downto 0)        -- BCD output, 10 bits [2|4|4] to display a 3 digit BCD value when input has length 8
         );
     end component;
@@ -65,10 +69,10 @@ architecture structural of ALU_top is
     component regUpdate is
         port (  clk        : in  std_logic;
                 reset      : in  std_logic;
-                RegCtrl    : in  std_logic_vector (1 downto 0);   -- Register update control from ALU controller
-                input      : in  std_logic_vector (7 downto 0);   -- Switch inputs
-                A          : out std_logic_vector (7 downto 0);   -- Input A
-                B          : out std_logic_vector (7 downto 0)   -- Input B
+                RegCtrl    : in  std_logic_vector (1 downto 0);     -- Register update control from ALU controller
+                input      : in  std_logic_vector (7 downto 0);     -- Switch inputs
+                A          : out std_logic_vector (7 downto 0);     -- Input A
+                B          : out std_logic_vector (7 downto 0)      -- Input B
             );
     end component;
         
@@ -109,8 +113,8 @@ begin
     ALUcontroller: ALU_ctrl
     port map (  clk     => clk,
                 reset   => reset_negated,
-                enter   => Enter,
-                sign    => Sign,
+                enter   => b_Enter,
+                sign    => b_Sign,
                 FN      => FN_signal,
                 RegCtrl => RegCtrl_signal
     );
@@ -137,6 +141,7 @@ begin
          port map ( binary_in    => result_signal,      
                     BCD_out      => BCD_signal    
            );
+
     seven_seg_drivern : seven_seg_driver
         port map (clk           => clk,
                   reset         => reset_negated,
@@ -146,5 +151,12 @@ begin
                   DIGIT_ANODE   => anode,
                   SEGMENT       => seven_seg
             );
+
+    anode_off <= (others => '1');
+    
+    
+    state <= FN_signal;
+    enter_led <= Enter;
+    sign_led <= Sign;
     
 end structural;

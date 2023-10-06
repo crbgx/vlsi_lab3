@@ -25,7 +25,7 @@ begin
 
     registers: process (clk, reset)
     begin
-        if rising_edge(clk) then
+        if clk'event and clk = '1' then
             if reset = '1' then
                 current_state <= operand_A;
             else

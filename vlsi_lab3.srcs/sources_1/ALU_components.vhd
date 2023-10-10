@@ -148,7 +148,7 @@ architecture behavioral of mod3 is
     
 begin
     
-    process (temp_x, x)
+    process (temp_x, x, minus)
     begin
         temp_output <= temp_x;
         if temp_x >= minus then

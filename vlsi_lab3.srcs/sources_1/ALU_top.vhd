@@ -14,7 +14,7 @@ entity ALU_top is
           anode      : out std_logic_vector(3 downto 0);
           anode_off  : out std_logic_vector(3 downto 0);
           state      : out std_logic_vector(3 downto 0);
-          enter_led : out std_logic;
+          enter_led  : out std_logic;
           sign_led   : out std_logic
     );
 end ALU_top;

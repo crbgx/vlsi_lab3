@@ -63,7 +63,7 @@ begin  -- structural
         "00101101" after 8 * period,   -- B = 45
         "00100100" after 9 * period;   -- B = 36
      
-   FN <= "1100";                                -- Pass A
+   FN <= "1010";                                -- Pass A
          --"0001" after 1 * period,             -- Pass B
          --"0000" after 2 * period,             -- Pass A
          --"0001" after 3 * period,             -- Pass B

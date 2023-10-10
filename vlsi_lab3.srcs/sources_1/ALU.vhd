@@ -81,14 +81,14 @@ begin
         output => temp_output_7
         );
 
-    process ( FN, A, B, temp_A, temp_B, output, temp_output_7)
+    process ( FN, A, B, temp_A, temp_B, output_sign, output, temp_output_7)
     begin
     sign <= '0';
     overflow <= '0';
     temp_A <= '0' & A;
     temp_B <= '0' & B;
     output(8) <= '0';
-    
+    output_sign <= (others => '0');
     
     case FN is
         when "0000" =>   -- Input A
@@ -109,7 +109,7 @@ begin
         when "0100" =>   -- Unsigned(A) mod 3 
             output(7 downto 0) <= temp_output_7;          
             
-        when "1010" =>   -- Signed(A + B)       -- TODO simply into one-liner
+        when "1010" =>   -- Signed(A + B)
             temp_A(8) <= temp_A(7);
             temp_B(8) <= temp_B(7);
             output <= std_logic_vector(abs(signed(std_logic_vector(signed(temp_A) + signed(temp_B)))));
@@ -143,7 +143,7 @@ begin
             end if;
             
         when others =>
-            output(7 downto 0) <= "11111111";    -- TODO maybe change to another default
+            output(7 downto 0) <= "11111111";
             
     end case;
 

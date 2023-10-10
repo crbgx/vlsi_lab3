@@ -17,7 +17,7 @@ architecture behavioral of tb_7SegDriver is
             );
     end component;
 
-    signal clk          : std_logic;
+    signal clk          : std_logic := '1';
     signal reset        : std_logic;
     signal BCD_digit    : std_logic_vector(9 downto 0);
     signal sign         : std_logic;
@@ -42,9 +42,7 @@ begin   -- behavioral
    -- *************************
    -- User test data pattern
    -- ************************* 
-    
-    
-    --TODO Incomplete
+
     clk <= not(clk) after period/2;
     
     reset <=    '1',

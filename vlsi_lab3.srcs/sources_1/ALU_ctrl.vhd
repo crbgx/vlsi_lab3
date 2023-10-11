@@ -19,7 +19,7 @@ architecture behavioral of ALU_ctrl is
     
     -- SIGNAL DEFINITIONS HERE IF NEEDED
     signal current_state, next_state: state_type;
-
+    signal Last_E, Last_S: std_logic := '0';
 
 begin
 
@@ -30,11 +30,13 @@ begin
                 current_state <= operand_A;
             else
                 current_state <= next_state;
+                Last_E <= enter;
+                Last_S <= sign;
             end if;
         end if;
     end process;
 
-    combinational: process (enter, sign, current_state)
+    combinational: process (enter, sign, current_state, Last_E, Last_S)
     begin
         -- set default value
         next_state <= current_state;
@@ -45,62 +47,62 @@ begin
             when operand_A =>
                 FN <= "0000";
                 RegCtrl <= "10";    -- Writing into register A
-                if enter = '1' then 
+                if enter = '1' and Last_E = '0' then 
                     next_state <= operand_B;
                 end if;
                 
             when operand_B =>
                 FN <= "0001";
                 RegCtrl <= "01";    -- Writing into register B
-                if enter = '1' then 
+                if enter = '1' and Last_E = '0' then 
                     next_state <= sum_unsigned;
                 end if;
                 
             when sum_unsigned =>
                 FN <= "0010";
-                if enter = '1' then 
+                if enter = '1' and Last_E = '0' then 
                     next_state <= minus_unsigned;
-                elsif sign = '1' then
+                elsif sign = '1' and Last_S = '0' then
                     next_state <= sum_signed;
                 end if;
                 
             when minus_unsigned =>
                 FN <= "0011";
-                if enter = '1' then 
+                if enter = '1' and Last_E = '0' then 
                     next_state <= mod3_unsigned;
-                elsif sign = '1' then
+                elsif sign = '1' and Last_S = '0' then
                     next_state <= minus_signed;
                 end if;
                 
             when mod3_unsigned =>
                 FN <= "0100";
-                if enter = '1' then 
+                if enter = '1' and Last_E = '0' then 
                     next_state <= sum_unsigned;
-                elsif sign = '1' then
+                elsif sign = '1' and Last_S = '0' then
                     next_state <= mod3_signed;
                 end if;
                 
             when sum_signed =>
                 FN <= "1010";
-                if enter = '1' then 
+                if enter = '1' and Last_E = '0' then 
                     next_state <= minus_signed;
-                elsif sign = '1' then
+                elsif sign = '1' and Last_S = '0' then
                     next_state <= sum_unsigned;
                 end if;
 
             when minus_signed =>
                 FN <= "1011";
-                if enter = '1' then 
+                if enter = '1' and Last_E = '0' then 
                     next_state <= mod3_signed;
-                elsif sign = '1' then
+                elsif sign = '1' and Last_S = '0' then
                     next_state <= minus_unsigned;
                 end if;
                 
             when mod3_signed =>
                 FN <= "1100";
-                if enter = '1' then 
+                if enter = '1' and Last_E = '0' then 
                     next_state <= sum_signed;
-                elsif sign = '1' then
+                elsif sign = '1' and Last_S = '0' then
                     next_state <= mod3_unsigned;
                 end if;
         end case;

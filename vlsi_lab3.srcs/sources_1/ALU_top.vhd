@@ -113,8 +113,8 @@ begin
     ALUcontroller: ALU_ctrl
     port map (  clk     => clk,
                 reset   => reset_negated,
-                enter   => b_Enter,
-                sign    => b_Sign,
+                enter   => Enter,
+                sign    => Sign,
                 FN      => FN_signal,
                 RegCtrl => RegCtrl_signal
     );
@@ -129,11 +129,11 @@ begin
     );
  
     ALUn: ALU
-        port map ( A        => A_signal,      
-                   B        => B_signal,   
-                   FN       => FN_signal,   
-                   result   => result_signal,    
-                   overflow => OF_signal,  
+        port map ( A        => A_signal,
+                   B        => B_signal,
+                   FN       => FN_signal,
+                   result   => result_signal,
+                   overflow => OF_signal,
                    sign     => sign_signal  
         );
         

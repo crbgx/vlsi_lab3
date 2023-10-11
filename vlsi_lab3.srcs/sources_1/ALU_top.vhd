@@ -12,10 +12,7 @@ entity ALU_top is
           input      : in  std_logic_vector(7 downto 0);
           seven_seg  : out std_logic_vector(6 downto 0);
           anode      : out std_logic_vector(3 downto 0);
-          anode_off  : out std_logic_vector(3 downto 0);
-          state      : out std_logic_vector(3 downto 0);
-          enter_led  : out std_logic;
-          sign_led   : out std_logic
+          anode_off  : out std_logic_vector(3 downto 0)
     );
 end ALU_top;
 
@@ -153,10 +150,5 @@ begin
             );
 
     anode_off <= (others => '1');
-    
-    
-    state <= FN_signal;
-    enter_led <= Enter;
-    sign_led <= Sign;
     
 end structural;

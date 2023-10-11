@@ -19,7 +19,7 @@ architecture behavioral of seven_seg_driver is
     type state_type_display is (dis0, dis1, dis2, dis3);
     
     signal current_state_display, next_state_display: state_type_display;
-    signal reg_digit_counter, next_reg_digit_counter: unsigned(16 downto 0);
+    signal reg_digit_counter, next_reg_digit_counter: unsigned(16 downto 0):= (others => '0');
     signal temp_SEGMENT : std_logic_vector(27 downto 0);
     signal overFlow_Sign : std_logic_vector(1 downto 0) := (others => '0');
     
